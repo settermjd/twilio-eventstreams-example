@@ -1,0 +1,37 @@
+{
+    "name": "settermjd/twilio-eventstreams-example",
+    "description": "A small Slim application showing how to use the Twilio Event Streams webhook",
+    "version": "0.0.1",
+    "type": "project",
+    "license": "MIT",
+    "keywords": [
+        "Slim",
+        "Twilio",
+        "Event Streams",
+        "Webhooks"
+    ],
+    "config": {
+        "sort-packages": true
+    },
+    "require": {
+        "monolog/monolog": "^3.7",
+        "php-di/slim-bridge": "^3.4",
+        "slim/psr7": "^1.7",
+        "slim/slim": "^4.14",
+        "twilio/sdk": "^8.2",
+        "vlucas/phpdotenv": "^5.6"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.59",
+        "phpunit/phpunit": "^11.2",
+        "squizlabs/php_codesniffer": "^3.10"
+    },
+    "scripts": {
+        "cs-check": "phpcs",
+        "cs-fix": "phpcbf",
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "php -S 0.0.0.0:8080 -t public/"
+        ]
+    }
+}
