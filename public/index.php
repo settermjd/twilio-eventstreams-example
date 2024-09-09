@@ -231,19 +231,20 @@ $app->post('/webhook-sink', function (Request $request, Response $response, arra
     $validator = new RequestValidator($_ENV["TWILIO_AUTH_TOKEN"]);
     $isFromTwilio = $validator->validate(
         $request->getHeaderLine('X-Twilio-Signature'),
-        (string)$request->getUri(),
-        $request->getParsedBody()
+        $_ENV['NGROK_URL'] . '/webhook-sink?' . http_build_query($request->getQueryParams()),
+        (string)$request->getBody()
     );
 
-    // validate the signature
+    $body = ($isFromTwilio) ? "Valid signature." : "Invalid signature.";
+
     ($isFromTwilio)
         ? $logger->info("Valid signature. Processing event.")
         : $logger->info(
         "Invalid signature.",
         [
             'Twilio Signature' => $request->getHeaderLine('X-Twilio-Signature'),
-            'Request URI' => (string)$request->getUri(),
-            'Event Data' => $request->getParsedBody(),
+            'Request URI' => $_ENV['NGROK_URL'] . '/webhook-sink?' . http_build_query($request->getQueryParams()),
+            'Event Data' => (string)$request->getBody(),
         ]
     );
 
@@ -258,6 +259,7 @@ $app->post('/webhook-sink', function (Request $request, Response $response, arra
         ]
     );
 
+    $response->getBody()->write($body);
     return $response;
 });
 
